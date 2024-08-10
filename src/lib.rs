@@ -9,7 +9,7 @@
 #![forbid(unsafe_op_in_unsafe_fn)]
 #![allow(non_snake_case)]
 
-use scheduling::cooperative::kasync::{AsyncRuntime, Mutex};
+use scheduling::cooperative::kasync::AsyncRuntime;
 
 extern crate alloc;
 
@@ -38,6 +38,8 @@ pub fn init() -> ! {
 #[cfg(not(feature = "test"))]
 fn start_pornos() {
     x86_64::instructions::interrupts::enable();
+
+    println!("Hello from PornOS");
 
     let mut runtime = AsyncRuntime::new();
     assert!(runtime.run().is_ok());

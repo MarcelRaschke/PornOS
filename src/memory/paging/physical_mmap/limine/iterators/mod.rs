@@ -3,11 +3,11 @@ mod useable;
 
 use core::slice::Iter;
 
-use limine::{LimineMemmapEntry, NonNullPtr};
+use limine::memory_map::Entry;
 
 pub use {kernel_and_modules::KernelAndModulesIterator, useable::UseableMemChunkIterator};
 
-pub struct MemChunkIterator(Iter<'static, NonNullPtr<LimineMemmapEntry>>);
+pub struct MemChunkIterator(Iter<'static, &'static Entry>);
 
 impl MemChunkIterator {
     pub fn new() -> Self {
@@ -16,9 +16,9 @@ impl MemChunkIterator {
 }
 
 impl Iterator for MemChunkIterator {
-    type Item = &'static NonNullPtr<LimineMemmapEntry>;
+    type Item = &'static Entry;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
+        self.0.next().map(|&entry| entry)
     }
 }
